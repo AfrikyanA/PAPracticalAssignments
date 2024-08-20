@@ -1,0 +1,83 @@
+header {
+	background-color: #285943;
+	margin: 15px;
+	border: 1px solid black;
+	border-radius: 2px;
+	text-align: center;
+	color: white;
+}
+
+body {
+	font-family: "Fira Sans", sans-serif;
+}
+
+a {
+    outline: none; /* Убирает синюю окантовку при фокусировке */
+}
+
+a:focus {
+		outline: 2px solid blueviolet;
+}
+
+nav {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	border-radius: 5px;
+	background-color: #77AF9C;
+	padding: 10px;
+	margin: 15px;
+}
+
+ul {
+	list-style: none;
+	display: flex;
+	margin: 0;
+	padding: 0;
+	margin-right: 20px;
+
+}
+
+ul li {
+	margin-right: 20px;
+}
+
+.paragraphs {
+	border-radius: 10px;
+	background-color: #D7FFF1;
+  padding: 10px;
+	border-radius: 2px;
+}
+
+.image {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 5px;
+	display: block;
+}
+
+footer {
+  background-color: #285943;
+	padding: 5px;
+	text-align: left;
+	margin: 15px;
+	color: white;
+}
+
+main {
+    margin: 15px;
+}
+
+h2 {
+    text-align: center;
+    margin: 15px;
+}
+
+p {
+	margin: 15px;
+}
+
+.header2 {
+	background-color: #77AF9C;
+}
