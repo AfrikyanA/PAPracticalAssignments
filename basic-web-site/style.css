@@ -12,7 +12,7 @@ body {
 }
 
 a {
-    outline: none; /* Убирает синюю окантовку при фокусировке */
+    outline: none;
 }
 
 a:focus {
