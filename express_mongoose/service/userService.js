@@ -7,10 +7,6 @@ const handleError = (res, message, code = 500) => {
 
 export const createUser = async (req, res) => {
     const {name, email, age} = req.body;
-
-    if (!name || !email || !age) {
-        return handleError(res, 'All fields are required');
-    }
     try {
         const newUser = new User({ name, email, age });
         await newUser.save();

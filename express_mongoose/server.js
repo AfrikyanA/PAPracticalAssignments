@@ -1,7 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import * as userService from './service/userService.js'
+import * as userService from './service/userService.js';
+import { validateUser } from './midleware/validateUser.js'
 dotenv.config();
 
 const PORT = process.env.PORT;
@@ -13,11 +14,10 @@ mongoose
 .catch((err) => console.log('Cant connect to DB\n',err));
 
 const app = express();
-
 app.use(express.json());
 
 
-app.post('/users', userService.createUser);
+app.post('/users', validateUser(), userService.createUser);
 app.get('/users', userService.getUsers);
 app.get('/users/:id', userService.getUserById);
 app.delete('/users/:id', userService.deleteUserById);
