@@ -1,17 +1,6 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
-import Product from './product.js';
-import dotenv from 'dotenv';
-dotenv.config();
-
-const PORT = process.env.PORT;
-const MONGO_URL = process.env.MONGO_URL;
-
-mongoose
-.connect(MONGO_URL)
-.then(() => console.log('Connect to db'))
-.catch((err) => console.log('Cant connect to DB\n',err));
+const express = require('express');
+const { MongoClient } = require('mongodb');
+const bodyParser =  require('body-parser');
 
 const app = express();
 app.use(bodyParser.json());
@@ -22,25 +11,25 @@ const handleError = (res, message, code = 500) => {
     res.status(code).json({ message: message });
 };
 
+const client = new MongoClient('mongodb://127.0.0.1:27017');
+client.connect();
+console.log('Connect to db');
+const products = client.db('ashotdb').collection('products');
+
 app.get('/products', async (req, res) => {
     try{
-        const products = await Product.find();
-        if (!products.length) {
-            return handleError(res, 'Productss not found', 404);
-        }
-        res.status(200).json({ products });
+        const productList =  await products.find({}).toArray();
+        res.status(200).json({ productList });
     }
     catch (err) {
-        handleError(res, 'Failed to fetch productss');
+        handleError(res, 'Failed to fetch products');
     }
 });
 
 app.post('/products', async (req, res) => {
     const { name, price } = req.body;
     try {
-        const newProduct = new Product({ name, price });
-        await newProduct.save();
-
+        const newProduct = await products.insertOne({ name, price });
         res.status(201).json({ message: 'Product created successfully', user: newProduct });
     }
     catch (err) {
@@ -48,7 +37,7 @@ app.post('/products', async (req, res) => {
     }
 });
 
-app.listen(PORT, (err) => {
+app.listen(4444, (err) => {
     if (err) {
         return console.log('Cant connect to port' + PORT,err);
     }
