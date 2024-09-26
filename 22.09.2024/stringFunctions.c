@@ -14,10 +14,10 @@ char* concat(const char* str1, const char* str2){
         return strdef(str1);
     }
 
-    str len1 = strlen(str1);
-    str len2 = strlen(str2);
+    size_t len1 = strlen(str1);
+    size_t len2 = strlen(str2);
 
-    char* result = malloc((len1 + len2 + 2) * sizeof(char));
+    char* result = malloc(len1 + len2 + 2);
     if (result == NULL){
         exit(1);
     }
@@ -29,8 +29,8 @@ char* concat(const char* str1, const char* str2){
     return result;
 }
 
-int includes(const char* str1, const char* substring){
-    if (str1 == NULL || value == NULL){
+int includes(const char* str, const char* substring){
+    if (str == NULL || substring == NULL){
         return 0;
     }
 
@@ -53,7 +53,7 @@ int endsWith(const char* str, const char* suffix){
 }
 
 int startsWith(const char* str, const char* prefix){
-    if (str == NULL || suffix == NULL) {
+    if (str == NULL || prefix == NULL) {
         return 0;
     }
 
@@ -128,7 +128,7 @@ char* replaceAll(const char* str, const char* oldValue, const char* newValue) {
     int count = 0;
     const char* temp = str;
     while ((temp = strstr(temp, oldValue)) != NULL) {
-        count++;
+        ++count;
         temp += strlen(oldValue);
     }
 
@@ -198,7 +198,7 @@ char** split(const char* str, const char* delimiter, int* count) {
     *count = 0;
 
     while (token != NULL) {
-        result = realloc(result, (*count + 1) * sizeof(char*));
+        result = realloc(result, *count + 1);
         if (result == NULL) {
             free(temp);
             return NULL;
@@ -264,7 +264,7 @@ char* toLowerCase(const char* str) {
         return NULL;
     }
 
-    for (size_t i = 0; i < len; i++) {
+    for (size_t i = 0; i < len; ++i {
         result[i] = tolower(str[i]);
     }
     result[len] = '\0';
@@ -297,9 +297,13 @@ char* trim(const char* str) {
     }
 
     const char* end;
-    while (*str == ' ') str++;
+    while (*str == ' ') {
+        ++str;
+    }
     end = str + strlen(str) - 1;
-    while (end > str && *end == ' ') end--;
+    while (end > str && *end == ' ') {
+        --end;
+    }
 
     size_t len = end - str + 1;
     char* result = malloc(len + 1);
@@ -318,7 +322,9 @@ char* trimStart(const char* str) {
         return NULL;
     }
 
-    while (*str == ' ') str++;
+    while (*str == ' ') {
+        ++str;
+    }
 
     size_t len = strlen(str);
     char* result = malloc(len + 1);
@@ -337,7 +343,9 @@ char* trimEnd(const char* str) {
     }
 
     const char* end = str + strlen(str) - 1;
-    while (end > str && *end == ' ') end--;
+    while (end > str && *end == ' ') {
+        --end;
+    };
 
     size_t len = end - str + 1;
     char* result = malloc(len + 1);
@@ -369,7 +377,7 @@ char* padStart(const char* str, size_t length, const char* padString) {
     }
 
     size_t i;
-    for (i = 0; i < padLen; i++) {
+    for (i = 0; i < padLen; ++i) {
         result[i] = padString[i % padStringLen];
     }
     strcpy(result + padLen, str);
@@ -396,7 +404,7 @@ char* padEnd(const char* str, size_t length, const char* padString) {
     }
 
     strcpy(result, str);
-    for (size_t i = strLen; i < length; i++) {
+    for (size_t i = strLen; i < length; ++i) {
         result[i] = padString[(i - strLen) % padStringLen];
     }
     result[length] = '\0';
@@ -419,7 +427,7 @@ char* repeat(const char* str, size_t count) {
         return NULL;
     }
 
-    for (size_t i = 0; i < count; i++) {
+    for (size_t i = 0; i < count; ++i {
         strcpy(result + i * strLen, str);
     }
     result[strLen * count] = '\0';
