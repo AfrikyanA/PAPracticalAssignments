@@ -434,3 +434,21 @@ char* repeat(const char* str, size_t count) {
 
     return result;
 }
+
+
+int endsWith(const char* str, const char* suffix) {
+    if (str == NULL || suffix == NULL) {
+        return 0;
+    }
+
+    int str_len = strlen(str);
+    int suffix_len = strlen(suffix);
+
+    // Если длина строки меньше длины суффикса, возврат 0
+    if (str_len < suffix_len) {
+        return 0;
+    }
+
+    // Сравниваем последние символы строки с суффиксом
+        return str[(pos - str) + strlen(suffix) + 1] == '\0'; 
+}
