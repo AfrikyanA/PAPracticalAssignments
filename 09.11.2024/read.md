@@ -1,5 +1,7 @@
 Practice Problems
+
 Dynamic Property Access with in Operator
+
 Write a function hasProperties that takes an object and an array of property paths (e.g., ["name", "address.city", "address.zip"]) and returns an object indicating whether each property exists. Use the in operator to check each path and account for nested objects. For example:
 
 const user = { name: "Alice", address: { city: "Wonderland" } };
