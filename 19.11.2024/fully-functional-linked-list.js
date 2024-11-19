@@ -19,6 +19,7 @@ class LinkedList {
             this.tail.next = new Node(value);
             this.tail = this.tail.next;
         }
+        return this;
     }
 
     prepend(value) {
@@ -30,66 +31,113 @@ class LinkedList {
             newNode.next = this.head;
             this.head = newNode;
         }
+        return this;
     }
 
     removeValue(value) {
         if (!this.head) {
-            return false;
+            return null;
         }
 
         let prev = null;
         let curr = this.head;
 
-        while (curr != null && curr.value != value) {
+        while (curr && curr.value != value) {
             prev = curr;
             curr = curr.next;
         }
 
-        if (curr === null) {
-            return false;
+        if (!curr) {
+            return null;
         }
 
-        if (this.head === curr) {
+        if (this.head == curr) {
             this.head = curr.next;
         } else {
             prev.next = curr.next;
         }
 
         curr.next = null;
-        return true;
+        return this;
     }
 
     removeAtIndex(index) {
         if (!this.head) {
-            return false;
+            return null;
         }
-        if (typeof value === 'number' && !isNaN(value)) {
-            return false;
+        if (typeof index == 'number' && !isNaN(index)) {
+            return null;
         }
 
         let prev = null;
         let curr = this.head;
         let count = 0;
-        while (curr != null && count != index) {
+        while (curr && count != index) {
             prev = curr;
             curr = curr.next;
             ++count;
         }
 
-        if (curr === null) {
-            return false;
+        if (!curr) {
+            return null;
         }
 
-        if (this.head === curr) {
+        if (this.head == curr) {
             this.head = curr.next;
         } else {
             prev.next = curr.next;
         }
         
         curr.next = null;
-        return true;
+        return this;
     }
 
+    insert(value, index) {
+        if (typeof index != 'number' || index < 0 || isNaN(index)) {
+            return null;
+        }
+    
+        if (!this.head) {
+            if (index == 0) {
+                this.head = new Node(value);
+                this.tail = this.head;
+                return this;
+            }
+            return null;
+        }
+    
+        if (index == 0) {
+            let newNode = new Node(value);
+            newNode.next = this.head;
+            this.head = newNode;
+            return this;
+        }
+    
+        let count = 0;
+        let curr = this.head;
+        let prev = null;
+    
+        while (curr && count != index) {
+            prev = curr;
+            curr = curr.next;
+            count++;
+        }
+    
+        if (count == index) {
+            let newNode = new Node(value);
+            newNode.next = curr;
+            if (prev) {
+                prev.next = newNode;
+            }
+            if (!newNode.next) {
+                this.tail = newNode;
+            }
+            return this;
+        }
+    
+        return null;
+    }
+    
     search(value) {
         if (!this.head) {
             return null;
@@ -97,66 +145,19 @@ class LinkedList {
 
         let curr = this.head;
 
-        while (curr != null && curr.value != value) {
+        while (curr && curr.value != value) {
             curr = curr.next;
         }
 
-        if (curr === null) {
+        if (!curr) {
             return null;
         }
         return curr;
     }
 
-    insert(value, index) {
-        if (typeof index !== 'number' || index < 0 || isNaN(index)) {
-            return null;
-        }
-    
-        if (this.head === null) {
-            if (index === 0) {
-                this.head = new Node(value);
-                this.tail = this.head;
-                return this.head;
-            }
-            return null;
-        }
-    
-        if (index === 0) {
-            let newNode = new Node(value);
-            newNode.next = this.head;
-            this.head = newNode;
-            return this.head;
-        }
-    
-        let count = 0;
-        let curr = this.head;
-        let prev = null;
-    
-        while (curr !== null && count !== index) {
-            prev = curr;
-            curr = curr.next;
-            count++;
-        }
-    
-        if (count === index) {
-            let newNode = new Node(value);
-            newNode.next = curr;
-            if (prev) {
-                prev.next = newNode;
-            }
-            if (newNode.next === null) {
-                this.tail = newNode;
-            }
-            return this.head;
-        }
-    
-        return null;
-    }
-    
-
     reverse() {
-        if (this.head === null) {
-            return null;
+        if (this.head || !this.head.next) {
+            return this;
         }
 
         let prev = null;
@@ -169,13 +170,33 @@ class LinkedList {
             curr = tmp;
         }
         this.head = prev;
-        return this.head;
+        return this;
+    }
+
+    [Symbol.iterator]() {
+        let current = this.head;
+        return {
+            next() {
+                if (current) {
+                    let value = current.value;
+                    current = current.next;
+                    return {
+                        value: value,
+                        done: false
+                    }
+                } else {
+                    return {
+                        done: true
+                    }
+                }
+            }
+        };
     }
 
     toString() {
         let curr = this.head;
         let result = [];
-        while (curr !== null) {
+        while (curr) {
             result.push(curr.value);
             curr = curr.next;
         }
@@ -183,17 +204,23 @@ class LinkedList {
     }
 
     isEmpty() {
-        return Boolean(!this.head);
+        return (this.head == null);
     }
 
     size() {
         let count = 0;
         let curr = this.head;
-        while (curr != null) {
+        while (curr) {
             curr = curr.next;
             ++count;
         }
         return count;
+    }
+
+    clear() {
+        this.head = null;
+        this.tail = null;
+        return this;
     }
 };
 
