@@ -120,15 +120,15 @@ class FrankensteinList {
         }
     }
 
-    insert(value) { // pushback
+    insert(value) {
         if (value == null) {
             return null;
         }
         let newNode = new Node(value);
-        if (!this.head) { // first node
+        if (!this.head) {
             this.head = newNode;
             this.tail = this.head;
-        } else { // last node
+        } else {
             this.tail.next = newNode;
             newNode.prev = this.tail;
             this.tail = this.tail.next; 
@@ -148,8 +148,8 @@ class FrankensteinList {
             return null;
         }
 
-        if (this.head == curr) { // first node
-            if (!this.head.next) { // single node
+        if (this.head == curr) {
+            if (!this.head.next) {
                 this.head = null;
                 this.tail = null;
                 return null;
@@ -157,11 +157,11 @@ class FrankensteinList {
             curr.next.prev = null;
             this.head = curr.next;
             curr.next = null;
-        } else if (!curr.next) { // last node
+        } else if (!curr.next) {
             this.tail = curr.prev;
             curr.prev.next = null;
             curr.prev = null;
-        } else { // mid node
+        } else {
             curr.prev.next = curr.next;
             curr.next.prev = curr.prev;
             curr.next = null;
@@ -178,7 +178,7 @@ class FrankensteinList {
         }
 
         let newNode = new Node(value);
-        if (value < this.head.value) { // first node
+        if (value < this.head.value) {
             newNode.next = this.head;
             this.head.prev = newNode;
             this.head = newNode;
@@ -187,7 +187,7 @@ class FrankensteinList {
             return this;
         }
 
-        if (value > this.tail.value) { // last node
+        if (value > this.tail.value) {
             this.tail.next = newNode;
             newNode.prev = this.tail;
             this.tail = newNode;
@@ -269,22 +269,3 @@ class FrankensteinList {
         return this;
     }
 };
-
-let list = new FrankensteinList;
-list.insert(5);
-list.insert(20);
-list.insert(4);
-list.insert(6);
-list.insert(7);
-list.remove(7);
-
-list.insertInSortedOrder(0);
-console.log(list.toString());
-list.printLesserAndGreater();
-
-list.serialize("json.txt");
-
-let list2 = new FrankensteinList;
-list2.deserialize("json.txt");
-console.log(list2.toString());
-list2.printLesserAndGreater();
