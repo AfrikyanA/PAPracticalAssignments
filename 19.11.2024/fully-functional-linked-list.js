@@ -12,6 +12,10 @@ class LinkedList {
     }
 
     append(value) {
+        if (value == null) {
+            return null;
+        }
+
         if (!this.head) {
             this.head = new Node(value);
             this.tail = this.head;
@@ -23,6 +27,10 @@ class LinkedList {
     }
 
     prepend(value) {
+        if (value == null) {
+            return null;
+        }
+
         if (!this.head) {
             this.head = new Node(value);
             this.tail = this.head;
@@ -35,7 +43,7 @@ class LinkedList {
     }
 
     removeValue(value) {
-        if (!this.head) {
+        if (!this.head || value == null) {
             return null;
         }
 
@@ -93,7 +101,7 @@ class LinkedList {
     }
 
     insert(value, index) {
-        if (typeof index != 'number' || index < 0 || isNaN(index)) {
+        if (value == null || typeof index != 'number' || index < 0 || isNaN(index)) {
             return null;
         }
     
@@ -139,7 +147,7 @@ class LinkedList {
     }
     
     search(value) {
-        if (!this.head) {
+        if (!this.head || value == null) {
             return null;
         }
 
@@ -218,7 +226,14 @@ class LinkedList {
     }
 
     clear() {
-        this.head = null;
+        if (!this.head) {
+            return null;
+        }
+        while (this.head) {
+            let tmp = this.head.next;
+            this.head.next = null;
+            this.head = tmp;
+        }
         this.tail = null;
         return this;
     }
