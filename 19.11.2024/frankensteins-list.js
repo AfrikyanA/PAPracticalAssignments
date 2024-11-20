@@ -62,7 +62,6 @@ class FrankensteinList {
 
         const nodeMap = new Map();
 
-        // create nodes
         for (const nodeData of nodes) {
             const newNode = new Node(nodeData.value);
             nodeMap.set(nodeData.value, newNode);
@@ -77,7 +76,6 @@ class FrankensteinList {
             }
         }
 
-        // restore greater and lesser
         for (const nodeData of nodes) {
             const node = nodeMap.get(nodeData.value);
             node.greater = nodeMap.get(nodeData.greater) || null;
@@ -103,9 +101,9 @@ class FrankensteinList {
             nodes.push(current);
             current = current.next;
         }
-    
+
         nodes.sort((a, b) => a.value - b.value);
-        
+
         for (let i = 0; i < nodes.length; ++i) {
             if (i === 0) {
                 nodes[i].lesser = null;
@@ -131,7 +129,7 @@ class FrankensteinList {
         } else {
             this.tail.next = newNode;
             newNode.prev = this.tail;
-            this.tail = this.tail.next; 
+            this.tail = this.tail.next;
         }
         this.#setLesserAndGreater();
         return this;
@@ -143,7 +141,7 @@ class FrankensteinList {
         }
 
         let curr = this.#findByValue(value);
-        
+
         if (!curr) {
             return null;
         }
@@ -199,7 +197,7 @@ class FrankensteinList {
         let curr = this.head;
 
         while (curr) {
-            
+
             if (value > curr.value && value < curr.next.value) {
                 newNode.next = curr.next;
                 newNode.prev = curr;
@@ -212,7 +210,7 @@ class FrankensteinList {
             curr = curr.next;
         }
     }
-    
+
     toString() {
         if (!this.head) {
             return "null";
