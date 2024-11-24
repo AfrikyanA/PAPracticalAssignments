@@ -46,43 +46,47 @@ class FrankensteinList {
             console.error(`File ${filePath} does not exist.`);
             return null;
         }
-
-        const data = fs.readFileSync(filePath, 'utf8');
-        if (!data.trim()) {
-            console.error(`File "${filePath}" is empty.`);
-            return null;
-        }
-
-        const nodes = JSON.parse(data);
-        if (!Array.isArray(nodes) || typeof nodes[0] != 'object') {
-            console.error(`File "${filePath}" does not contain a valid serialized list.`);
-            return null;
-        }
-        this.clear();
-
-        const nodeMap = new Map();
-
-        for (const nodeData of nodes) {
-            const newNode = new Node(nodeData.value);
-            nodeMap.set(nodeData.value, newNode);
-
-            if (!this.head) {
-                this.head = newNode;
-                this.tail = newNode;
-            } else {
-                this.tail.next = newNode;
-                newNode.prev = this.tail;
-                this.tail = newNode;
+        try {
+            const data = fs.readFileSync(filePath, 'utf8');
+            if (!data.trim()) {
+                console.error(`File "${filePath}" is empty.`);
+                return null;
             }
-        }
 
-        for (const nodeData of nodes) {
-            const node = nodeMap.get(nodeData.value);
-            node.greater = nodeMap.get(nodeData.greater) || null;
-            node.lesser = nodeMap.get(nodeData.lesser) || null;
-        }
+            const nodes = JSON.parse(data);
+            if (!Array.isArray(nodes) || typeof nodes[0] != 'object') {
+                console.error(`File "${filePath}" does not contain a valid serialized list.`);
+                return null;
+            }
+            this.clear();
 
-        console.log(`List deserialized from ${filePath}`);
+            const nodeMap = new Map();
+
+            for (const nodeData of nodes) {
+                const newNode = new Node(nodeData.value);
+                nodeMap.set(nodeData.value, newNode);
+
+                if (!this.head) {
+                    this.head = newNode;
+                    this.tail = newNode;
+                } else {
+                    this.tail.next = newNode;
+                    newNode.prev = this.tail;
+                    this.tail = newNode;
+                }
+            }
+
+            for (const nodeData of nodes) {
+                const node = nodeMap.get(nodeData.value);
+                node.greater = nodeMap.get(nodeData.greater) || null;
+                node.lesser = nodeMap.get(nodeData.lesser) || null;
+            }
+
+            console.log(`List deserialized from ${filePath}`);
+        } catch (err) {
+            console.error(`Failed to deserialize list from ${filePath}:`, err);
+            return null;
+        }
     }
 
     #findByValue(value) {
@@ -253,9 +257,6 @@ class FrankensteinList {
     }
 
     clear() {
-        if (!this.head) {
-            return null;
-        }
         while (this.head) {
             let tmp = this.head.next;
             this.head.next = null;
