@@ -217,12 +217,10 @@ class LinkedList {
 
     size() {
         let count = 0;
-        let curr = this.head;
-        while (curr) {
-            curr = curr.next;
+        for (let curr = this.head; curr; curr = curr.next) {
             ++count;
         }
-        return count;
+        return count;        
     }
 
     clear() {

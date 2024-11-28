@@ -125,15 +125,4 @@ function decodeIEEE754_64(binary) {
   };
 }
 
-// Example usage
-let res = encodeIEEE754_64(-Infinity);
-console.log(res);
-console.log(decodeIEEE754_64(res.ieee754));
-// Output:
-// {
-//   sign: '1',
-//   exponent: '11111111111',
-//   fraction: '0000000000000000000000000000000000000000000000000000',
-//   ieee754: '1111111111110000000000000000000000000000000000000000000000000000'
-// }
-// { value: -Infinity }
+module.exports = {encodeIEEE754_64, decodeIEEE754_64}; 
